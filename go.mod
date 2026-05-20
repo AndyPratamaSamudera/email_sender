@@ -1,4 +1,4 @@
-module email-sender
+module email_sender
 
 go 1.25.0
 

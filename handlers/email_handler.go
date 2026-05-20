@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"email-sender/models"
-	"email-sender/utils"
+	"email_sender/models"
+	"email_sender/utils"
 
 	"github.com/gin-gonic/gin"
 )

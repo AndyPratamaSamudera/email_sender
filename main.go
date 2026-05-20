@@ -8,9 +8,9 @@ import (
 	"os"
 	"strings"
 
-	_ "email-sender/docs"
-	"email-sender/handlers"
-	"email-sender/models"
+	_ "email_sender/docs"
+	"email_sender/handlers"
+	"email_sender/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
