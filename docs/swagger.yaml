@@ -7,34 +7,6 @@ definitions:
       message:
         type: string
     type: object
-  models.SendEmailRequest:
-    properties:
-      accessCode:
-        example: your_access_code_here
-        type: string
-      body:
-        example: <html><body><h1>Hello World</h1></body></html>
-        type: string
-      emailRecipient:
-        example: recipient@example.com
-        type: string
-      emailSender:
-        example: your-email@example.com
-        type: string
-      senderPassword:
-        example: your_app_password
-        type: string
-      subject:
-        example: Testing Email
-        type: string
-    required:
-    - accessCode
-    - body
-    - emailRecipient
-    - emailSender
-    - senderPassword
-    - subject
-    type: object
   models.SuccessResponse:
     properties:
       is_success:
@@ -42,7 +14,6 @@ definitions:
       message:
         type: string
     type: object
-host: localhost:8080
 info:
   contact: {}
   description: API untuk mengirim email HTML melalui SMTP.
@@ -52,15 +23,46 @@ paths:
   /send-email:
     post:
       consumes:
-      - application/json
+      - multipart/form-data
+      - application/x-www-form-urlencoded
       description: Sending HTML email using SMTP with access code validation
       parameters:
-      - description: Request payload
-        in: body
-        name: request
+      - default: your_access_code_here
+        description: Access Code
+        in: formData
+        name: accessCode
         required: true
-        schema:
-          $ref: '#/definitions/models.SendEmailRequest'
+        type: string
+      - default: your-email@example.com
+        description: Email Sender
+        in: formData
+        name: emailSender
+        required: true
+        type: string
+      - default: your_app_password
+        description: Sender Password
+        in: formData
+        name: senderPassword
+        required: true
+        type: string
+      - default: recipient@example.com
+        description: Email Recipient
+        in: formData
+        name: emailRecipient
+        required: true
+        type: string
+      - default: Testing Email
+        description: Subject
+        in: formData
+        name: subject
+        required: true
+        type: string
+      - default: <html><body><h1>Hello World</h1></body></html>
+        description: HTML Body
+        in: formData
+        name: body
+        required: true
+        type: string
       produces:
       - application/json
       responses:

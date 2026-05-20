@@ -21,7 +21,6 @@ import (
 // @title SMTP Email Sender API
 // @version 1.0
 // @description API untuk mengirim email HTML melalui SMTP.
-// @host localhost:8080
 // @BasePath /
 
 type responseBodyWriter struct {

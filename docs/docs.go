@@ -19,7 +19,8 @@ const docTemplate = `{
             "post": {
                 "description": "Sending HTML email using SMTP with access code validation",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data",
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
@@ -30,13 +31,52 @@ const docTemplate = `{
                 "summary": "Send HTML emails",
                 "parameters": [
                     {
-                        "description": "Request payload",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.SendEmailRequest"
-                        }
+                        "type": "string",
+                        "default": "your_access_code_here",
+                        "description": "Access Code",
+                        "name": "accessCode",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "your-email@example.com",
+                        "description": "Email Sender",
+                        "name": "emailSender",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "your_app_password",
+                        "description": "Sender Password",
+                        "name": "senderPassword",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "recipient@example.com",
+                        "description": "Email Recipient",
+                        "name": "emailRecipient",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Testing Email",
+                        "description": "Subject",
+                        "name": "subject",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "\u003chtml\u003e\u003cbody\u003e\u003ch1\u003eHello World\u003c/h1\u003e\u003c/body\u003e\u003c/html\u003e",
+                        "description": "HTML Body",
+                        "name": "body",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -80,43 +120,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SendEmailRequest": {
-            "type": "object",
-            "required": [
-                "accessCode",
-                "body",
-                "emailRecipient",
-                "emailSender",
-                "senderPassword",
-                "subject"
-            ],
-            "properties": {
-                "accessCode": {
-                    "type": "string",
-                    "example": "your_access_code_here"
-                },
-                "body": {
-                    "type": "string",
-                    "example": "\u003chtml\u003e\u003cbody\u003e\u003ch1\u003eHello World\u003c/h1\u003e\u003c/body\u003e\u003c/html\u003e"
-                },
-                "emailRecipient": {
-                    "type": "string",
-                    "example": "recipient@example.com"
-                },
-                "emailSender": {
-                    "type": "string",
-                    "example": "your-email@example.com"
-                },
-                "senderPassword": {
-                    "type": "string",
-                    "example": "your_app_password"
-                },
-                "subject": {
-                    "type": "string",
-                    "example": "Testing Email"
-                }
-            }
-        },
         "models.SuccessResponse": {
             "type": "object",
             "properties": {
@@ -134,7 +137,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "SMTP Email Sender API",

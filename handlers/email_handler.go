@@ -15,9 +15,15 @@ import (
 // @Summary Send HTML emails
 // @Description Sending HTML email using SMTP with access code validation
 // @Tags email
-// @Accept json
+// @Accept multipart/form-data
+// @Accept application/x-www-form-urlencoded
 // @Produce json
-// @Param request body models.SendEmailRequest true "Request payload"
+// @Param accessCode formData string true "Access Code" default(your_access_code_here)
+// @Param emailSender formData string true "Email Sender" default(your-email@example.com)
+// @Param senderPassword formData string true "Sender Password" default(your_app_password)
+// @Param emailRecipient formData string true "Email Recipient" default(recipient@example.com)
+// @Param subject formData string true "Subject" default(Testing Email)
+// @Param body formData string true "HTML Body" default(<html><body><h1>Hello World</h1></body></html>)
 // @Success 200 {object} models.SuccessResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
@@ -25,7 +31,7 @@ import (
 // @Router /send-email [post]
 func SendEmailHandler(c *gin.Context) {
 	var req models.SendEmailRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		log.Printf("Invalid request body: %v\n", err)
 		c.JSON(http.StatusBadRequest, models.ErrorResponse{
 			IsSuccess: false,
