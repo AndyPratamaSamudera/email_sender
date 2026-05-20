@@ -1,0 +1,86 @@
+basePath: /
+definitions:
+  models.ErrorResponse:
+    properties:
+      is_success:
+        type: boolean
+      message:
+        type: string
+    type: object
+  models.SendEmailRequest:
+    properties:
+      accessCode:
+        example: your_access_code_here
+        type: string
+      body:
+        example: <html><body><h1>Hello World</h1></body></html>
+        type: string
+      emailRecipient:
+        example: recipient@example.com
+        type: string
+      emailSender:
+        example: your-email@example.com
+        type: string
+      senderPassword:
+        example: your_app_password
+        type: string
+      subject:
+        example: Testing Email
+        type: string
+    required:
+    - accessCode
+    - body
+    - emailRecipient
+    - emailSender
+    - senderPassword
+    - subject
+    type: object
+  models.SuccessResponse:
+    properties:
+      is_success:
+        type: boolean
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API untuk mengirim email HTML melalui SMTP.
+  title: SMTP Email Sender API
+  version: "1.0"
+paths:
+  /send-email:
+    post:
+      consumes:
+      - application/json
+      description: Sending HTML email using SMTP with access code validation
+      parameters:
+      - description: Request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SendEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Send HTML emails
+      tags:
+      - email
+swagger: "2.0"

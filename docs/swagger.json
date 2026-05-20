@@ -1,0 +1,126 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API untuk mengirim email HTML melalui SMTP.",
+        "title": "SMTP Email Sender API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/send-email": {
+            "post": {
+                "description": "Sending HTML email using SMTP with access code validation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "email"
+                ],
+                "summary": "Send HTML emails",
+                "parameters": [
+                    {
+                        "description": "Request payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SendEmailRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "is_success": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SendEmailRequest": {
+            "type": "object",
+            "required": [
+                "accessCode",
+                "body",
+                "emailRecipient",
+                "emailSender",
+                "senderPassword",
+                "subject"
+            ],
+            "properties": {
+                "accessCode": {
+                    "type": "string",
+                    "example": "your_access_code_here"
+                },
+                "body": {
+                    "type": "string",
+                    "example": "\u003chtml\u003e\u003cbody\u003e\u003ch1\u003eHello World\u003c/h1\u003e\u003c/body\u003e\u003c/html\u003e"
+                },
+                "emailRecipient": {
+                    "type": "string",
+                    "example": "recipient@example.com"
+                },
+                "emailSender": {
+                    "type": "string",
+                    "example": "your-email@example.com"
+                },
+                "senderPassword": {
+                    "type": "string",
+                    "example": "your_app_password"
+                },
+                "subject": {
+                    "type": "string",
+                    "example": "Testing Email"
+                }
+            }
+        },
+        "models.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "is_success": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
