@@ -16,3 +16,5 @@
 
 # Environment file
 .env
+
+email_sender
