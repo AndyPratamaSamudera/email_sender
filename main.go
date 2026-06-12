@@ -18,11 +18,6 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title SMTP Email Sender API
-// @version 1.0
-// @description API untuk mengirim email HTML melalui SMTP.
-// @BasePath /
-
 type responseBodyWriter struct {
 	gin.ResponseWriter
 	body *bytes.Buffer

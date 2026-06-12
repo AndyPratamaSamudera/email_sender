@@ -11,24 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// SendEmailHandler godoc
-// @Summary Send HTML emails
-// @Description Sending HTML email using SMTP with access code validation
-// @Tags email
-// @Accept multipart/form-data
-// @Accept application/x-www-form-urlencoded
-// @Produce json
-// @Param accessCode formData string true "Access Code" default(your_access_code_here)
-// @Param emailSender formData string true "Email Sender" default(your-email@example.com)
-// @Param senderPassword formData string true "Sender Password" default(your_app_password)
-// @Param emailRecipient formData string true "Email Recipient" default(recipient@example.com)
-// @Param subject formData string true "Subject" default(Testing Email)
-// @Param body formData string true "HTML Body" default(<html><body><h1>Hello World</h1></body></html>)
-// @Success 200 {object} models.SuccessResponse
-// @Failure 400 {object} models.ErrorResponse
-// @Failure 401 {object} models.ErrorResponse
-// @Failure 500 {object} models.ErrorResponse
-// @Router /send-email [post]
 func SendEmailHandler(c *gin.Context) {
 	var req models.SendEmailRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -40,7 +22,6 @@ func SendEmailHandler(c *gin.Context) {
 		return
 	}
 
-	// Validasi access code
 	validHash := os.Getenv("VALID_ACCESS_CODE_HASH")
 	if validHash == "" {
 		log.Println("Warning: VALID_ACCESS_CODE_HASH is not set in environment")
@@ -55,7 +36,6 @@ func SendEmailHandler(c *gin.Context) {
 		return
 	}
 
-	// Auto detect SMTP host
 	smtpHost := utils.AutoDetectSMTPHost(req.EmailSender)
 	if smtpHost == "" {
 		log.Printf("Failed to auto-detect SMTP host for email: %s\n", req.EmailSender)
@@ -66,12 +46,10 @@ func SendEmailHandler(c *gin.Context) {
 		return
 	}
 
-	// Set default SMTP port to 587
 	smtpPort := 587
 
 	log.Printf("Sending email from %s to %s via %s:%d\n", req.EmailSender, req.EmailRecipient, smtpHost, smtpPort)
 
-	// Send email
 	err := utils.SendEmail(
 		req.EmailSender,
 		req.SenderPassword,

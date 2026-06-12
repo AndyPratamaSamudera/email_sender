@@ -10,7 +10,6 @@ import (
 
 var ErrTimeout = errors.New("timeout when sending email")
 
-// AutoDetectSMTPHost detects the SMTP host based on the email domain.
 func AutoDetectSMTPHost(email string) string {
 	parts := strings.Split(email, "@")
 	if len(parts) != 2 {
@@ -26,12 +25,10 @@ func AutoDetectSMTPHost(email string) string {
 	case "yahoo.com":
 		return "smtp.mail.yahoo.com"
 	default:
-		// Return empty string if domain is not known
 		return ""
 	}
 }
 
-// SendEmail sends an HTML email via SMTP with timeout.
 func SendEmail(sender, password, recipient, subject, body, smtpHost string, smtpPort int) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", sender)
@@ -41,7 +38,6 @@ func SendEmail(sender, password, recipient, subject, body, smtpHost string, smtp
 
 	d := gomail.NewDialer(smtpHost, smtpPort, sender, password)
 
-	// Use channel for timeout handling (simple implementation)
 	errCh := make(chan error, 1)
 
 	go func() {
@@ -51,7 +47,7 @@ func SendEmail(sender, password, recipient, subject, body, smtpHost string, smtp
 	select {
 	case err := <-errCh:
 		return err
-	case <-time.After(15 * time.Second): // 15 seconds timeout
+	case <-time.After(15 * time.Second):
 		return ErrTimeout
 	}
 }
